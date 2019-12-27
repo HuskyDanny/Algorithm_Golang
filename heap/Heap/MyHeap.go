@@ -23,33 +23,36 @@ func (this *MyHeap) Append(val int) bool {
 
 	this.length++
 	this.arr[this.length] = val
-	targetIndex := this.percolateUp(val)
-	this.swap(this.length, targetIndex)
+	this.percolateUp(val)
 
 	return true
 }
 
 func (this *MyHeap) RemoveTop() int {
+	
 	topValue := this.arr[1]
 	this.swap(1, this.length)
 	this.length -= 1
 
-	targetIndex := this.percolateDown(topValue)
+	this.percolateDown(this.arr[1])
 
-	this.swap(1, targetIndex)
+	//this.swap(1, targetIndex)
 
 	return topValue
 }
 
-func (this *MyHeap) percolateUp(val int) int {
+func (this *MyHeap) percolateUp(val int) {
 
 	startIndex := (this.length )
 
 	for startIndex > 1  && this.arr[startIndex / 2] < val {
+		parentIndex := startIndex
 		startIndex = startIndex / 2
+
+		this.swap(parentIndex, startIndex)
 	}
 
-	return startIndex
+	
 	
 }
 
@@ -59,24 +62,24 @@ func (this *MyHeap) swap(indexI int, indexJ int) {
 	this.arr[indexJ] = temp
 }
 
-func (this *MyHeap) percolateDown(val int) int {
+func (this *MyHeap) percolateDown(val int)  {
 	
 	startIndex := 1
 
-	for startIndex <= this.length && (val < this.arr[startIndex * 2] || val < this.arr[startIndex * 2 + 1]) {
-
-		if this.arr[startIndex * 2] > this.arr[startIndex * 2 + 1] {
-			startIndex *= 2
-		}else {
+	for startIndex <= this.length && (startIndex * 2 <= this.length && val < this.arr[startIndex * 2] || (startIndex * 2 + 1 <= this.length) && val < this.arr[startIndex * 2 + 1]) {
+		parentIndex := startIndex
+		if (startIndex * 2 + 1 <= this.length) && this.arr[startIndex * 2] < this.arr[startIndex * 2 + 1] {
 			startIndex = 2 * startIndex + 1
+		}else {
+			startIndex = 2 * startIndex
 		}
+
+		this.swap(parentIndex, startIndex)
 	
 	}
-	fmt.Println("shit")
-	return startIndex
 }
 
 func (this *MyHeap) PrintAll() {
-	fmt.Println("haha")
 	fmt.Println(this.arr[1:this.length+1])
+	
 }

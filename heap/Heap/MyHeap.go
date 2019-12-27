@@ -34,7 +34,7 @@ func (this *MyHeap) RemoveTop() int {
 	this.swap(1, this.length)
 	this.length -= 1
 
-	this.percolateDown(this.arr[1])
+	this.percolateDown(this.arr[1], 1)
 
 	//this.swap(1, targetIndex)
 
@@ -62,9 +62,8 @@ func (this *MyHeap) swap(indexI int, indexJ int) {
 	this.arr[indexJ] = temp
 }
 
-func (this *MyHeap) percolateDown(val int)  {
+func (this *MyHeap) percolateDown(val int, startIndex int)  {
 	
-	startIndex := 1
 
 	for startIndex <= this.length && (startIndex * 2 <= this.length && val < this.arr[startIndex * 2] || (startIndex * 2 + 1 <= this.length) && val < this.arr[startIndex * 2 + 1]) {
 		parentIndex := startIndex
@@ -82,4 +81,15 @@ func (this *MyHeap) percolateDown(val int)  {
 func (this *MyHeap) PrintAll() {
 	fmt.Println(this.arr[1:this.length+1])
 	
+}
+
+func (this *MyHeap) Heapify(arr []int) {
+	for i := 1; i <= len(arr); i++ {
+		this.arr[i] = arr[i-1]
+		this.length++
+	}
+
+	for i := this.length / 2; i > 0; i-- {
+		this.percolateDown(this.arr[i], i)
+	}
 }
